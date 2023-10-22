@@ -48,6 +48,9 @@ function App() {
         <button class="circle-button" onClick={increment}>
           <i class="fa fa-caret-up"></i>
         </button>
+        <button class="reset" onClick={reset}>
+          <h1>Reset</h1>
+        </button>
       </div>
     </div>
   );

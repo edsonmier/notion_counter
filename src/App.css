@@ -39,6 +39,27 @@
   animation: floaty 2s ease-in-out infinite;
 }
 
+.reset{
+  position: absolute;
+  height: 1rem;
+  justify-self: center;
+  align-self: center;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  top: 14.5rem;
+}
+
+.reset h1{
+  font-size: 1rem;
+}
+
+.reset h1:hover{
+  text-shadow: 0px 15px 20px rgba(0, 0, 0, 0.3);
+}
+
 @keyframes floaty {
   0% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
