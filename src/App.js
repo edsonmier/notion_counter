@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import haerin from './nj-art/Pixels/Haerin.png';
+import hanni from './nj-art/Pixels/Hanni.png';
+import minji from './nj-art/Pixels/Minji.png';
+import danni from './nj-art/Pixels/Danni.png';
+import hyein from './nj-art/Pixels/Hyein.png';
+
+
 import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
+
+  const newjeansImages = [haerin, hanni, minji, danni, hyein];
+
+  const [randomImage, setRandomImage] = useState(null);
+
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * newjeansImages.length);
+    setRandomImage(newjeansImages[randomIndex]);
+  }, []);
+
 
   const increment = () => {
     setCount(count + 1);
   };
 
   const decrement = () => {
-    setCount(count-1);
+    if (count > 0) {
+      setCount(count-1);
+    }
   }
 
   const reset = () => {
@@ -19,10 +38,13 @@ function App() {
   return (
     <div class="App">
       <div class="container">
+        <img src={randomImage} className="floaty-image" alt="Newjean" />
         <button class="circle-button" onClick={decrement}>
           <i class="fa fa-caret-down"></i>
         </button>
-        <h1 class="circle">{count}</h1>
+        <div class="circle">
+          <h1 >{count}</h1>
+        </div>
         <button class="circle-button" onClick={increment}>
           <i class="fa fa-caret-up"></i>
         </button>

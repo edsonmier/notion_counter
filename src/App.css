@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'MiFuentePersonalizada'; /* Nombre que usarás para referenciar la fuente */
+  src: url('./fonts/IntroRust-Base.otf') format('otf'), 
+}
+
+
 .App {
   font-family: 'Arial', sans-serif;
   text-align: center;
@@ -7,12 +13,14 @@
   margin: 0;
   padding: 0;
   height: 100vh;
+  font-family: 'IntroRust-Base', sans-serif; /* sans-serif es una fuente de respaldo */
 }
 
 
 .container{
+  position: relative;
   background: url(./nj-art/Background.png);
-  height: 20rem;
+  height: 22rem;
   width: 40rem;
   background-size: cover;
   background-position: center;
@@ -22,8 +30,23 @@
   align-items: center;
 }
 
+.floaty-image {
+  position: absolute;
+  height: 8rem;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  animation: floaty 2s ease-in-out infinite;
+}
+
+@keyframes floaty {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
 h1 {
-  font-size: 48px;
+  font-size: 5rem;
 }
 
 button {
@@ -37,7 +60,19 @@ button {
 }
 
 .circle{
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  color: #333;
+  border: none;
+  padding: 15px;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .circle-button {
@@ -48,20 +83,15 @@ button {
   color: #333;
   border: none;
   padding: 15px;
-  width: 4rem;
-  height: 4rem;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  font-size: 3rem; 
+  font-size: 4rem; 
   cursor: pointer;
   transition: all 0.3s ease 0s;
 }
 
 .circle-button:hover {
-  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.1);
-}
-
-
-button:hover {
-  background-color: #4A4E69;
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.2);
 }
