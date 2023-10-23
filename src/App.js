@@ -8,36 +8,39 @@ import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
+  const [initialCountLoaded, setInitialCountLoaded] = useState(false);
   const newjeansImages = [haerin, hanni, minji, danni, hyein];
   const [randomImage, setRandomImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasFetched, setHasFetched] = useState(false);
-
 
   useEffect(() => {
     fetch('https://nj-backend.vercel.app/api/getCount')
-        .then(res => res.json())
+        .then(res => {
+            console.log("Respuesta raw:", res);
+            return res.json();
+        })
         .then(data => {
+            console.log("Data:", data);
             setCount(data.count);
-            setHasFetched(true);
+            setInitialCountLoaded(true);
         })
         .catch(error => console.error("Error al obtener el contador:", error));
-}, []);
+  }, []);
 
-  
 useEffect(() => {
-  if (hasFetched) {
-    fetch('https://nj-backend.vercel.app/api/updateCount', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ count })
-    })
-    .catch(error => {
-      console.error("Hubo un error actualizando el contador:", error);
-    });
-  }
-}, [count, hasFetched]);
-
+  if (!initialCountLoaded) return; 
+  fetch('https://nj-backend.vercel.app/api/updateCount', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ count })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Respuesta de actualización:", data);
+  })
+  .catch(error => {
+    console.error("Hubo un error actualizando el contador:", error);
+  });
+}, [count]);
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * newjeansImages.length);
@@ -52,7 +55,22 @@ useEffect(() => {
     if (count > 0) setCount(count - 1);
   }
 
-  const reset = () => setCount(0);
+  const reset = () => {
+    setCount(0);
+    // También enviar petición para resetear el contador en el backend
+    fetch('https://nj-backend.vercel.app/api/updateCount', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ count: 0 })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Respuesta de reset:", data);
+    })
+    .catch(error => {
+      console.error("Hubo un error reseteando el contador:", error);
+    });
+  };
 
   return (
     <div className="App">
