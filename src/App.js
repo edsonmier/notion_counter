@@ -15,7 +15,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch('http://localhost:3001/getCount')
+    fetch('https://nj-backend.vercel.app/api/getCount')
         .then(res => res.json())
         .then(data => {
             setCount(data.count);
@@ -27,7 +27,7 @@ function App() {
   
 useEffect(() => {
   if (hasFetched) {
-    fetch('http://localhost:3001/updateCount', {
+    fetch('https://nj-backend.vercel.app/api/updateCount', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ count })
