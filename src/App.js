@@ -4,50 +4,55 @@ import hanni from './nj-art/Pixels/Hanni.png';
 import minji from './nj-art/Pixels/Minji.png';
 import danni from './nj-art/Pixels/Danni.png';
 import hyein from './nj-art/Pixels/Hyein.png';
-
-
 import './App.css';
 
-const initialCount = parseInt(localStorage.getItem('count') || '0', 10);
-
 function App() {
-  const [count, setCount] = useState(initialCount);
-
+  const [count, setCount] = useState(0);
   const newjeansImages = [haerin, hanni, minji, danni, hyein];
-
   const [randomImage, setRandomImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
+
+
+  useEffect(() => {
+    fetch('http://localhost:3001/getCount')
+        .then(res => res.json())
+        .then(data => {
+            setCount(data.count);
+            setHasFetched(true);
+        })
+        .catch(error => console.error("Error al obtener el contador:", error));
+}, []);
+
+  
+useEffect(() => {
+  if (hasFetched) {
+    fetch('http://localhost:3001/updateCount', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ count })
+    })
+    .catch(error => {
+      console.error("Hubo un error actualizando el contador:", error);
+    });
+  }
+}, [count, hasFetched]);
+
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * newjeansImages.length);
     setRandomImage(newjeansImages[randomIndex]);
   }, []);
 
-  useEffect(() => {
-    const savedCount = localStorage.getItem('count');
-    if (savedCount !== null) {
-      setCount(parseInt(savedCount, 10));
-    }
-  }, []);
-  
-  useEffect(() => {
-    localStorage.setItem('count', count);
-  }, [count]);
-
   const increment = () => {
-    if (count < 99){
-      setCount(count + 1);
-    }
+    if (count < 99) setCount(count + 1);
   };
 
   const decrement = () => {
-    if (count > 0) {
-      setCount(count-1);
-    }
+    if (count > 0) setCount(count - 1);
   }
 
-  const reset = () => {
-    setCount(0);
-  };
+  const reset = () => setCount(0);
 
   return (
     <div className="App">
@@ -71,3 +76,4 @@ function App() {
 }
 
 export default App;
+
