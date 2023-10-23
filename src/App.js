@@ -8,8 +8,10 @@ import hyein from './nj-art/Pixels/Hyein.png';
 
 import './App.css';
 
+const initialCount = parseInt(localStorage.getItem('count') || '0', 10);
+
 function App() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(initialCount);
 
   const newjeansImages = [haerin, hanni, minji, danni, hyein];
 
@@ -20,9 +22,21 @@ function App() {
     setRandomImage(newjeansImages[randomIndex]);
   }, []);
 
+  useEffect(() => {
+    const savedCount = localStorage.getItem('count');
+    if (savedCount !== null) {
+      setCount(parseInt(savedCount, 10));
+    }
+  }, []);
+  
+  useEffect(() => {
+    localStorage.setItem('count', count);
+  }, [count]);
 
   const increment = () => {
-    setCount(count + 1);
+    if (count < 99){
+      setCount(count + 1);
+    }
   };
 
   const decrement = () => {
@@ -36,19 +50,19 @@ function App() {
   };
 
   return (
-    <div class="App">
-      <div class="container">
+    <div className="App">
+      <div className="container">
         <img src={randomImage} className="floaty-image" alt="Newjean" />
-        <button class="circle-button" onClick={decrement}>
-          <i class="fa fa-caret-down"></i>
+        <button className="circle-button" onClick={decrement}>
+          <i className="fa fa-caret-down"></i>
         </button>
-        <div class="circle">
+        <div className="circle">
           <h1 >{count}</h1>
         </div>
-        <button class="circle-button" onClick={increment}>
-          <i class="fa fa-caret-up"></i>
+        <button className="circle-button" onClick={increment}>
+          <i className="fa fa-caret-up"></i>
         </button>
-        <button class="reset" onClick={reset}>
+        <button className="reset" onClick={reset}>
           <h1>Reset</h1>
         </button>
       </div>
